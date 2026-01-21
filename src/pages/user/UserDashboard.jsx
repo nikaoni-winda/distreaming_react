@@ -56,7 +56,27 @@ function UserDashboard() {
         const fetchHistory = async () => {
             try {
                 const history = await getWatchHistory();
-                setWatchHistory(history);
+
+                // Deduplicate: Keep only the latest watch entry for each unique movie
+                const uniqueHistory = history.reduce((acc, item) => {
+                    const existingIndex = acc.findIndex(
+                        (h) => h.movie?.movie_id === item.movie?.movie_id
+                    );
+                    if (existingIndex === -1) {
+                        // Movie not seen yet, add it
+                        acc.push(item);
+                    } else {
+                        // Compare dates, keep the more recent one
+                        const existingDate = new Date(acc[existingIndex].watch_date || 0);
+                        const newDate = new Date(item.watch_date || 0);
+                        if (newDate > existingDate) {
+                            acc[existingIndex] = item;
+                        }
+                    }
+                    return acc;
+                }, []);
+
+                setWatchHistory(uniqueHistory);
             } catch (error) {
                 console.error('Error fetching watch history:', error);
             }
