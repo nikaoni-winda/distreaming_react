@@ -129,7 +129,7 @@ function Home() {
 
                     {loadingMovies ? (
                         <div className="flex items-center justify-center py-20">
-                            <div className="text-white text-lg">Loading movies...</div>
+                            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-netflix-red"></div>
                         </div>
                     ) : trendingMovies.length > 0 ? (
                         <div className="relative">

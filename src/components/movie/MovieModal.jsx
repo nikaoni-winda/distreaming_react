@@ -203,8 +203,31 @@ function MovieModal({ movie, onClose }) {
             className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-fadeIn"
             onClick={onClose}
         >
-            {/* Modal Container - hide when video is playing to show "fullscreen" video player */}
-            {!showVideo && (
+            {/* Loading State - Clean spinner without modal box */}
+            {loading && (
+                <div className="flex flex-col items-center justify-center gap-4" onClick={(e) => e.stopPropagation()}>
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-netflix-red"></div>
+                    <div className="text-gray-400 text-sm">Loading movie details...</div>
+                </div>
+            )}
+
+            {/* Error State */}
+            {!loading && error && (
+                <div className="flex items-center justify-center" onClick={(e) => e.stopPropagation()}>
+                    <div className="text-center bg-netflix-darkGray p-8 rounded-lg">
+                        <p className="text-white text-xl mb-4">{error}</p>
+                        <button
+                            onClick={onClose}
+                            className="px-6 py-2 bg-netflix-red hover:bg-netflix-darkRed text-white font-bold rounded transition"
+                        >
+                            Close
+                        </button>
+                    </div>
+                </div>
+            )}
+
+            {/* Modal Container - Only show when not loading and no error */}
+            {!loading && !error && !showVideo && (
                 <div
                     className="relative max-w-xl bg-black rounded-lg overflow-hidden shadow-2xl animate-scaleIn"
                     onClick={(e) => e.stopPropagation()}
@@ -220,116 +243,97 @@ function MovieModal({ movie, onClose }) {
                         </svg>
                     </button>
 
-                    {loading ? (
-                        // Loading State
-                        <div className="h-[500px] flex items-center justify-center">
-                            <div className="text-white text-xl">Loading movie details...</div>
-                        </div>
-                    ) : error ? (
-                        // Error State
-                        <div className="h-[500px] flex items-center justify-center">
-                            <div className="text-center">
-                                <p className="text-white text-xl mb-4">{error}</p>
-                                <button
-                                    onClick={onClose}
-                                    className="px-6 py-2 bg-netflix-red hover:bg-netflix-darkRed text-white font-bold rounded transition"
-                                >
-                                    Close
-                                </button>
+                    {/* Content - was previously inside the ternary */}
+                    <>
+                        {/* Hero Section with Background */}
+                        <div className="relative h-[280px]">
+                            {/* Background Image */}
+                            <div
+                                className="absolute inset-0 bg-cover bg-center"
+                                style={{
+                                    backgroundImage: displayedMovie.movie_poster
+                                        ? `url(${displayedMovie.movie_poster})`
+                                        : 'linear-gradient(to bottom, #1a1a1a, #000000)'
+                                }}
+                            >
+                                {/* Gradient Overlays */}
+                                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
+                                <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-black/30"></div>
                             </div>
-                        </div>
-                    ) : (
-                        <>
-                            {/* Hero Section with Background */}
-                            <div className="relative h-[280px]">
-                                {/* Background Image */}
-                                <div
-                                    className="absolute inset-0 bg-cover bg-center"
-                                    style={{
-                                        backgroundImage: displayedMovie.movie_poster
-                                            ? `url(${displayedMovie.movie_poster})`
-                                            : 'linear-gradient(to bottom, #1a1a1a, #000000)'
-                                    }}
-                                >
-                                    {/* Gradient Overlays */}
-                                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
-                                    <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-black/30"></div>
-                                </div>
 
-                                {/* Content */}
-                                <div className="relative h-full flex items-end pb-6 px-6 sm:px-8">
-                                    <div className="w-full">
-                                        {/* Title */}
-                                        <h1 className="text-2xl sm:text-3xl md:text-4xl font-black text-white mb-3 leading-tight">
-                                            {displayedMovie.movie_title}
-                                        </h1>
+                            {/* Content */}
+                            <div className="relative h-full flex items-end pb-6 px-6 sm:px-8">
+                                <div className="w-full">
+                                    {/* Title */}
+                                    <h1 className="text-2xl sm:text-3xl md:text-4xl font-black text-white mb-3 leading-tight">
+                                        {displayedMovie.movie_title}
+                                    </h1>
 
-                                        {/* Metadata Tags */}
-                                        <div className="flex flex-wrap gap-2 mb-4">
-                                            {displayedMovie.production_year && (
-                                                <span className="px-2.5 py-1 bg-gray-800/90 text-white text-xs sm:text-sm rounded">
-                                                    {displayedMovie.production_year}
-                                                </span>
-                                            )}
-                                            {displayedMovie.average_rating && (
-                                                <span className="px-2.5 py-1 bg-gray-800/90 text-white text-xs sm:text-sm rounded">
-                                                    ⭐ {displayedMovie.average_rating}
-                                                </span>
-                                            )}
-                                            {displayedMovie.movie_duration && (
-                                                <span className="px-2.5 py-1 bg-gray-800/90 text-white text-xs sm:text-sm rounded">
-                                                    {formatDuration(displayedMovie.movie_duration)}
-                                                </span>
-                                            )}
+                                    {/* Metadata Tags */}
+                                    <div className="flex flex-wrap gap-2 mb-4">
+                                        {displayedMovie.production_year && (
+                                            <span className="px-2.5 py-1 bg-gray-800/90 text-white text-xs sm:text-sm rounded">
+                                                {displayedMovie.production_year}
+                                            </span>
+                                        )}
+                                        {displayedMovie.average_rating && (
+                                            <span className="px-2.5 py-1 bg-gray-800/90 text-white text-xs sm:text-sm rounded">
+                                                ⭐ {displayedMovie.average_rating}
+                                            </span>
+                                        )}
+                                        {displayedMovie.movie_duration && (
+                                            <span className="px-2.5 py-1 bg-gray-800/90 text-white text-xs sm:text-sm rounded">
+                                                {formatDuration(displayedMovie.movie_duration)}
+                                            </span>
+                                        )}
 
-                                            {/* Genres from API */}
-                                            {displayedMovie.genres && displayedMovie.genres.length > 0 && (
-                                                displayedMovie.genres.map((genre) => (
-                                                    <span key={genre.genre_id} className="px-2.5 py-1 bg-gray-800/90 text-white text-xs sm:text-sm rounded">
-                                                        {genre.genre_name}
-                                                    </span>
-                                                ))
-                                            )}
-                                        </div>
+                                        {/* Genres from API */}
+                                        {displayedMovie.genres && displayedMovie.genres.length > 0 && (
+                                            displayedMovie.genres.map((genre) => (
+                                                <span key={genre.genre_id} className="px-2.5 py-1 bg-gray-800/90 text-white text-xs sm:text-sm rounded">
+                                                    {genre.genre_name}
+                                                </span>
+                                            ))
+                                        )}
                                     </div>
                                 </div>
                             </div>
+                        </div>
 
-                            {/* Description Section */}
-                            <div className="p-4 bg-gradient-to-b from-black to-netflix-darkGray">
-                                <p className="text-white text-sm sm:text-base leading-relaxed mb-4">
-                                    {getDescription()}
-                                </p>
+                        {/* Description Section */}
+                        <div className="p-4 bg-gradient-to-b from-black to-netflix-darkGray">
+                            <p className="text-white text-sm sm:text-base leading-relaxed mb-4">
+                                {getDescription()}
+                            </p>
 
-                                {/* Action Buttons */}
-                                <div className="flex gap-3">
-                                    {/* Get Started Button */}
+                            {/* Action Buttons */}
+                            <div className="flex gap-3">
+                                {/* Get Started Button */}
+                                <button
+                                    onClick={handlePlayClick}
+                                    className="flex-1 px-6 py-2.5 bg-netflix-red hover:bg-netflix-darkRed text-white text-base font-bold rounded transition flex items-center justify-center gap-2"
+                                >
+                                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
+                                    </svg>
+                                    {t('movieDetail.play')}
+                                </button>
+
+                                {/* Rate Movie Button - Only show if user is logged in */}
+                                {user && (
                                     <button
-                                        onClick={handlePlayClick}
-                                        className="flex-1 px-6 py-2.5 bg-netflix-red hover:bg-netflix-darkRed text-white text-base font-bold rounded transition flex items-center justify-center gap-2"
+                                        onClick={() => setShowRatingPopup(true)}
+                                        className="flex-1 px-6 py-2.5 bg-gray-700 hover:bg-gray-600 text-white text-base font-bold rounded transition flex items-center justify-center gap-2"
                                     >
                                         <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                                            <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
+                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                                         </svg>
-                                        {t('movieDetail.play')}
+                                        {existingRating ? `${t('movieDetail.yourRating')}: ${existingRating}/10` : t('movieDetail.rateMovie')}
                                     </button>
-
-                                    {/* Rate Movie Button - Only show if user is logged in */}
-                                    {user && (
-                                        <button
-                                            onClick={() => setShowRatingPopup(true)}
-                                            className="flex-1 px-6 py-2.5 bg-gray-700 hover:bg-gray-600 text-white text-base font-bold rounded transition flex items-center justify-center gap-2"
-                                        >
-                                            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                            </svg>
-                                            {existingRating ? `${t('movieDetail.yourRating')}: ${existingRating}/10` : t('movieDetail.rateMovie')}
-                                        </button>
-                                    )}
-                                </div>
+                                )}
                             </div>
-                        </>
-                    )}
+                        </div>
+                    </>
                 </div>
             )}
 
