@@ -3,6 +3,7 @@ import { FaCheckCircle, FaExclamationCircle, FaInfoCircle, FaTimes } from 'react
 
 const ToastContext = createContext();
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useToast = () => useContext(ToastContext);
 
 // Toast Component
@@ -39,6 +40,10 @@ const ToastItem = ({ id, message, type, onClose }) => {
 export const ToastProvider = ({ children }) => {
     const [toasts, setToasts] = useState([]);
 
+    const removeToast = useCallback((id) => {
+        setToasts(prev => prev.filter(toast => toast.id !== id));
+    }, []);
+
     const showToast = useCallback((message, type = 'info') => {
         const id = Date.now().toString();
         setToasts(prev => [...prev, { id, message, type }]);
@@ -47,11 +52,7 @@ export const ToastProvider = ({ children }) => {
         setTimeout(() => {
             removeToast(id);
         }, 3000);
-    }, []);
-
-    const removeToast = useCallback((id) => {
-        setToasts(prev => prev.filter(toast => toast.id !== id));
-    }, []);
+    }, [removeToast]);
 
     return (
         <ToastContext.Provider value={{ showToast }}>

@@ -18,7 +18,7 @@ function EditMovie() {
 
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
-    const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+    const [isSidebarOpen] = useState(true);
 
     const [formData, setFormData] = useState({
         movie_title: '',

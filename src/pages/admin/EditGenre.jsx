@@ -20,7 +20,7 @@ function EditGenre() {
     const [saving, setSaving] = useState(false);
     const [genre, setGenre] = useState(null);
     const [genreName, setGenreName] = useState('');
-    const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+    const [isSidebarOpen] = useState(true);
 
     // Add Movie State
     const [showAddModal, setShowAddModal] = useState(false);
@@ -39,13 +39,13 @@ function EditGenre() {
 
     useEffect(() => {
         fetchGenre();
-    }, [id]);
+    }, [id]); // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
         if (showAddModal) {
             searchMovies();
         }
-    }, [showAddModal, searchMovieTerm]);
+    }, [showAddModal, searchMovieTerm]); // eslint-disable-line react-hooks/exhaustive-deps
 
     const fetchGenre = async () => {
         try {

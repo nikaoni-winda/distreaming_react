@@ -37,7 +37,7 @@ const ReviewManagement = ({ t }) => {
 
     useEffect(() => {
         fetchReviews();
-    }, [page]);
+    }, [page]); // eslint-disable-line react-hooks/exhaustive-deps
 
     const handleDelete = (id) => {
         setConfirmModal({

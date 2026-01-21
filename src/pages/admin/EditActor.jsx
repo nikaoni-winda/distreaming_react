@@ -20,7 +20,7 @@ function EditActor() {
     const [saving, setSaving] = useState(false);
     const [actor, setActor] = useState(null);
     const [actorName, setActorName] = useState('');
-    const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+    const [isSidebarOpen] = useState(true);
 
     // Add Movie State
     const [showAddModal, setShowAddModal] = useState(false);
@@ -39,13 +39,13 @@ function EditActor() {
 
     useEffect(() => {
         fetchActor();
-    }, [id]);
+    }, [id]); // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
         if (showAddModal) {
             searchMovies();
         }
-    }, [showAddModal, searchMovieTerm]);
+    }, [showAddModal, searchMovieTerm]); // eslint-disable-line react-hooks/exhaustive-deps
 
     const fetchActor = async () => {
         try {

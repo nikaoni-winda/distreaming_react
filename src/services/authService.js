@@ -54,7 +54,7 @@ const authService = {
         if (userStr) {
             try {
                 return JSON.parse(userStr);
-            } catch (e) {
+            } catch {
                 return null;
             }
         }

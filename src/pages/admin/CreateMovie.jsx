@@ -15,7 +15,7 @@ function CreateMovie() {
     const { showToast } = useToast();
 
     const [saving, setSaving] = useState(false);
-    const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+    const [isSidebarOpen] = useState(true);
 
     const [formData, setFormData] = useState({
         movie_title: '',
@@ -57,7 +57,7 @@ function CreateMovie() {
             }
         };
         fetchData();
-    }, []);
+    }, [showToast]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;

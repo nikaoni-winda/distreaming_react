@@ -16,14 +16,14 @@ function ManageGenres() {
     const [genres, setGenres] = useState([]);
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
-    const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+    const [isSidebarOpen] = useState(true);
     const [showCreateModal, setShowCreateModal] = useState(false);
     const [newGenreName, setNewGenreName] = useState('');
     const [creating, setCreating] = useState(false);
 
     useEffect(() => {
         fetchGenres();
-    }, []);
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     const fetchGenres = async () => {
         try {

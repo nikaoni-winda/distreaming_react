@@ -17,7 +17,7 @@ function EditUser() {
 
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
-    const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+    const [isSidebarOpen] = useState(true);
     const [activeTab, setActiveTab] = useState('history'); // 'history' or 'reviews'
 
     const [user, setUser] = useState(null);

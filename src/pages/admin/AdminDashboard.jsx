@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSearchParams } from 'react-router-dom';
 import { FaBars } from 'react-icons/fa';
@@ -22,25 +22,13 @@ function AdminDashboard() {
     const { user, logout } = useAuth();
     const [searchParams, setSearchParams] = useSearchParams();
 
-    // Initialize activeTab from URL or default to 'dashboard'
-    const initialTab = searchParams.get('tab') || 'dashboard';
-    const [activeTab, setActiveTab] = useState(initialTab);
+    // Derive activeTab directly from URL - no need for local state sync
+    const activeTab = searchParams.get('tab') || 'dashboard';
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-
-    // Sync state when URL params change
-    useEffect(() => {
-        const tab = searchParams.get('tab');
-        if (tab && tab !== activeTab) {
-            setActiveTab(tab);
-        } else if (!tab && activeTab !== 'dashboard') {
-            setActiveTab('dashboard');
-        }
-    }, [searchParams, activeTab]);
 
     // Handle tab change by updating URL
     const handleTabChange = (tabId) => {
         setSearchParams({ tab: tabId });
-        setActiveTab(tabId);
     };
 
     const renderContent = () => {
