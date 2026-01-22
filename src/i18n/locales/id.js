@@ -76,10 +76,11 @@ export default {
     // Admin Dashboard
     "admin.welcome": "Selamat Datang",
     "admin.manage": "Kelola platform streaming Anda",
-    "admin.totalMovies": "TOTAL FILM",
-    "admin.totalUsers": "TOTAL PENGGUNA",
-    "admin.genres": "GENRE",
-    "admin.actors": "AKTOR",
+    "admin.totalMovies": "Total Film",
+    "admin.totalUsers": "Total Pengguna",
+    "admin.totalActors": "Total Aktor",
+    "admin.genres": "Genre",
+    "admin.actors": "Aktor",
     "admin.moviesManagement": "Manajemen Film",
     "admin.moviesDesc": "Buat, edit, dan hapus entri film. Kelola genre dan aktor.",
     "admin.genresManagement": "Genre & Kategori",
@@ -133,6 +134,8 @@ export default {
 
     // Movie Detail
     "movieDetail.play": "Putar",
+    "movieDetail.loadingDetails": "Memuat detail film...",
+    "movieDetail.noTrailer": "Maaf, trailer untuk film ini belum tersedia.",
     "movieDetail.rateMovie": "Beri Rating",
     "movieDetail.yourRating": "Rating Kamu",
     "movieDetail.rateThisMovie": "Beri Rating Film Ini",

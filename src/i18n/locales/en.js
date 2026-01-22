@@ -76,10 +76,11 @@ export default {
     // Admin Dashboard
     "admin.welcome": "Welcome",
     "admin.manage": "Manage your streaming platform",
-    "admin.totalMovies": "TOTAL MOVIES",
-    "admin.totalUsers": "TOTAL USERS",
-    "admin.genres": "GENRES",
-    "admin.actors": "ACTORS",
+    "admin.totalMovies": "Total Movies",
+    "admin.totalUsers": "Total Users",
+    "admin.totalActors": "Total Actors",
+    "admin.genres": "Genres",
+    "admin.actors": "Actors",
     "admin.moviesManagement": "Movies Management",
     "admin.moviesDesc": "Create, edit, and delete movie entries. Manage genres and actors.",
     "admin.genresManagement": "Genres & Categories",
@@ -133,6 +134,8 @@ export default {
 
     // Movie Detail
     "movieDetail.play": "Play",
+    "movieDetail.loadingDetails": "Loading movie details...",
+    "movieDetail.noTrailer": "Sorry, no trailer available for this movie yet.",
     "movieDetail.rateMovie": "Rate Movie",
     "movieDetail.yourRating": "Your Rating",
     "movieDetail.rateThisMovie": "Rate this movie",
