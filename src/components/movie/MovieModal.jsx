@@ -8,7 +8,7 @@ import StarRating from './StarRating';
 import api from '../../config/api';
 import { useToast } from '../../contexts/ToastContext';
 
-function MovieModal({ movie, onClose }) {
+function MovieModal({ movie, onClose, onWatchHistoryUpdate, onRatingUpdate }) {
     const { i18n, t } = useTranslation();
     const { user } = useAuth();
     const navigate = useNavigate();
@@ -77,12 +77,16 @@ function MovieModal({ movie, onClose }) {
         if (trailerUrl) {
             try {
                 await addToWatchHistory(user.user_id, displayedMovie.movie_id);
+                // Notify parent component to update watch history UI
+                if (onWatchHistoryUpdate) {
+                    onWatchHistoryUpdate(displayedMovie);
+                }
             } catch (error) {
                 console.error('Failed to add to watch history', error);
             }
             setShowVideo(true);
         } else {
-            showToast("Sorry, no trailer available for this movie yet.", 'info');
+            showToast(t('movieDetail.noTrailer') || "Sorry, no trailer available for this movie yet.", 'info');
         }
     };
 
@@ -172,12 +176,19 @@ function MovieModal({ movie, onClose }) {
                 setRatingMessage({ type: 'success', text: 'Rating submitted successfully!' });
                 showToast('Rating submitted successfully!', 'success');
 
+                const newAverageRating = response.data.data.movie?.average_rating;
+
                 // Update movie average rating in local state
                 if (movieData) {
                     setMovieData({
                         ...movieData,
-                        average_rating: response.data.data.movie?.average_rating || movieData.average_rating
+                        average_rating: newAverageRating || movieData.average_rating
                     });
+                }
+
+                // Notify parent component to update movie list with new rating
+                if (onRatingUpdate && newAverageRating) {
+                    onRatingUpdate(movie.movie_id, newAverageRating);
                 }
 
                 // Close popup after 1.5 seconds to show success message
@@ -207,7 +218,7 @@ function MovieModal({ movie, onClose }) {
             {loading && (
                 <div className="flex flex-col items-center justify-center gap-4" onClick={(e) => e.stopPropagation()}>
                     <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-netflix-red"></div>
-                    <div className="text-gray-400 text-sm">Loading movie details...</div>
+                    <div className="text-gray-400 text-sm">{t('movieDetail.loadingDetails')}</div>
                 </div>
             )}
 

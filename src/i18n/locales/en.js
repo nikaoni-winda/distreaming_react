@@ -215,6 +215,7 @@ export default {
     "admin.removeMovieFromGenreConfirm": "Are you sure you want to remove this movie from this genre?",
     "admin.movieAddedToGenre": "Movie added to genre successfully",
     "admin.movieRemovedFromGenre": "Movie removed from genre successfully",
+    "admin.movieUpdated": "Movie updated successfully",
 
     // Actor Management
     "admin.manageActors": "Actor Management",

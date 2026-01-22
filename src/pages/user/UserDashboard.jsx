@@ -123,6 +123,51 @@ function UserDashboard() {
         setCurrentPage(1); // Reset to first page on filter change
     };
 
+    // Handle watch history update when user plays a movie
+    const handleWatchHistoryUpdate = (movie) => {
+        // Add the movie to the beginning of watch history if not already there
+        setWatchHistory(prevHistory => {
+            const exists = prevHistory.some(item => item.movie?.movie_id === movie.movie_id);
+            if (exists) {
+                // Move existing entry to the front
+                const filtered = prevHistory.filter(item => item.movie?.movie_id !== movie.movie_id);
+                return [{
+                    watch_history_id: Date.now(), // Temporary ID
+                    movie: movie,
+                    watch_date: new Date().toISOString()
+                }, ...filtered];
+            } else {
+                // Add new entry at the beginning
+                return [{
+                    watch_history_id: Date.now(), // Temporary ID
+                    movie: movie,
+                    watch_date: new Date().toISOString()
+                }, ...prevHistory];
+            }
+        });
+    };
+
+    // Handle rating update when user submits a rating
+    const handleRatingUpdate = (movieId, newRating) => {
+        // Update the movie in the movies list
+        setMovies(prevMovies =>
+            prevMovies.map(m =>
+                m.movie_id === movieId
+                    ? { ...m, average_rating: newRating }
+                    : m
+            )
+        );
+
+        // Also update in watch history if exists
+        setWatchHistory(prevHistory =>
+            prevHistory.map(item =>
+                item.movie?.movie_id === movieId
+                    ? { ...item, movie: { ...item.movie, average_rating: newRating } }
+                    : item
+            )
+        );
+    };
+
     return (
         <div className="min-h-screen bg-black text-white">
             {/* Navbar */}
@@ -283,6 +328,8 @@ function UserDashboard() {
                 <MovieModal
                     movie={selectedMovie}
                     onClose={() => setSelectedMovie(null)}
+                    onWatchHistoryUpdate={handleWatchHistoryUpdate}
+                    onRatingUpdate={handleRatingUpdate}
                 />
             )}
 

@@ -215,6 +215,7 @@ export default {
     "admin.removeMovieFromGenreConfirm": "Apakah Anda yakin ingin menghapus film ini dari genre ini?",
     "admin.movieAddedToGenre": "Film berhasil ditambahkan ke genre",
     "admin.movieRemovedFromGenre": "Film berhasil dihapus dari genre",
+    "admin.movieUpdated": "Film berhasil diperbarui",
 
     // Actor Management
     "admin.manageActors": "Manajemen Aktor",
