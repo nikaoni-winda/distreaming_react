@@ -56,7 +56,7 @@ Use the following accounts to test the application's functionality.
 
 | Role | Email | Password | Access Level |
 |------|-------|----------|--------------|
-| **Regular User** | `xenaya@mail.com` | `xena1234` | Can browse, rate, review movies, and edit profile. |
+| **Regular User** | `xenaya@mail.com` | `xena1234` | Can browse, watch, rate, review movies, change subscription plan, and edit profile. |
 | **Admin** | `test@mail.com` | `test1234` | Full access to the Admin Dashboard. |
 
 ## 🔧 Configuration
